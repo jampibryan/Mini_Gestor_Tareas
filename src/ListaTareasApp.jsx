@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { Tarea } from "./Tarea.jsx";
 
 const listadoTareasInicial = [
-  { nombre: "Aprender JSX", completado: true },
-  { nombre: "Entender props y eventos", completado: true },
-  { nombre: "Practicar useState", completado: false },
-  { nombre: "Aplicar condicionales y ternarios", completado: false },
-  { nombre: "Renderizar listas con map()", completado: false },
-  { nombre: "Agregar estilos dinámicos", completado: false },
-  { nombre: "Separar componentes", completado: false },
+  { id: 1, nombre: "Aprender JSX", completado: true },
+  { id: 2, nombre: "Entender props y eventos", completado: true },
+  { id: 3, nombre: "Practicar useState", completado: false },
+  { id: 4, nombre: "Aplicar condicionales y ternarios", completado: false },
+  { id: 5, nombre: "Renderizar listas con map()", completado: false },
+  { id: 6, nombre: "Agregar estilos dinámicos", completado: false },
+  { id: 7, nombre: "Separar componentes", completado: false },
 ];
 
 export const ListaTareasApp = () => {
+  const [listadoTareas, setlistadoTareas] = useState(listadoTareasInicial);
+  const [nuevaTarea, setNuevaTarea] = useState("");
+
+  // Agregar nuevas tareas
   const addTask = () => {
     if (nuevaTarea.trim() === "") return;
 
@@ -22,8 +26,11 @@ export const ListaTareasApp = () => {
     setNuevaTarea("");
   };
 
-  const [listadoTareas, setlistadoTareas] = useState(listadoTareasInicial);
-  const [nuevaTarea, setNuevaTarea] = useState("");
+  //Eliminar tarea
+  const eliminarTarea = (id) => {
+    const nuevaListaTareas = listadoTareas.filter((item) => item.id !== id);
+    setlistadoTareas(nuevaListaTareas);
+  };
 
   return (
     <>
@@ -32,9 +39,10 @@ export const ListaTareasApp = () => {
       <ol>
         {listadoTareas.map((item) => (
           <Tarea
-            key={item.nombre}
+            key={item.id}
             nombre={item.nombre}
             completado={item.completado}
+            onEliminar={() => eliminarTarea(item.id)}
           ></Tarea>
         ))}
       </ol>

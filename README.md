@@ -4,8 +4,9 @@ Este es un proyecto simple en React para practicar conceptos fundamentales como 
 
 ## 🛠️ Funcionalidades
 - Ver una lista inicial de tareas.
-- Marcar tareas como completadas (✅) o pendientes (❌) al hacer click.
 - Agregar nuevas tareas mediante un input y un botón.
+- Eliminar tareas individualmente de la lista.
+- Marcar tareas como completadas (✅) o pendientes (❌) al hacer click.
 - Aplicar estilos diferentes a las tareas completadas.
 
 ## 🧩 Tecnologías usadas
