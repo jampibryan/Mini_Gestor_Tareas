@@ -18,18 +18,33 @@ export const ListaTareasApp = () => {
   // Agregar nuevas tareas
   const addTask = () => {
     if (nuevaTarea.trim() === "") return;
+    const newId =
+      listadoTareas.length > 0
+        ? listadoTareas[listadoTareas.length - 1].id + 1
+        : 1; // Obtener el último id y sumarle 1
 
     setlistadoTareas([
       ...listadoTareas,
-      { nombre: nuevaTarea, completado: false },
+      { id: newId, nombre: nuevaTarea, completado: false },
     ]);
     setNuevaTarea("");
   };
+
+  const listas = listadoTareas.map((item) => item.id);
+  console.log(listas);
 
   //Eliminar tarea
   const eliminarTarea = (id) => {
     const nuevaListaTareas = listadoTareas.filter((item) => item.id !== id);
     setlistadoTareas(nuevaListaTareas);
+  };
+
+  // Cambiar estado de completado
+  const cambiarEstadoCompletado = (id) => {
+    const listaTareasActualizada = listadoTareas.map((item) =>
+      item.id === id ? { ...item, completado: !item.completado } : item
+    );
+    setlistadoTareas(listaTareasActualizada);
   };
 
   return (
@@ -43,6 +58,7 @@ export const ListaTareasApp = () => {
             nombre={item.nombre}
             completado={item.completado}
             onEliminar={() => eliminarTarea(item.id)}
+            onCompletado={() => cambiarEstadoCompletado(item.id)}
           ></Tarea>
         ))}
       </ol>
