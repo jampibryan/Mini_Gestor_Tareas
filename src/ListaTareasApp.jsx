@@ -12,9 +12,11 @@ const listadoTareasInicial = [
 ];
 
 export const ListaTareasApp = () => {
-  const [listadoTareas, setlistadoTareas] = useState(listadoTareasInicial);
+  const [listadoTareas, setListadoTareas] = useState(listadoTareasInicial);
   const [nuevaTarea, setNuevaTarea] = useState("");
   const [seleccionadas, setSeleccionadas] = useState([]);
+
+  const [filtroActual, setFiltroActual] = useState("todas");
 
   // Agregar nuevas tareas
   const addTask = () => {
@@ -24,7 +26,7 @@ export const ListaTareasApp = () => {
         ? listadoTareas[listadoTareas.length - 1].id + 1
         : 1; // Obtener el último id y sumarle 1
 
-    setlistadoTareas([
+    setListadoTareas([
       ...listadoTareas,
       { id: newId, nombre: nuevaTarea, completado: false },
     ]);
@@ -39,7 +41,7 @@ export const ListaTareasApp = () => {
     const listaTareasActualizada = listadoTareas.map((item) =>
       item.id === id ? { ...item, completado: !item.completado } : item
     );
-    setlistadoTareas(listaTareasActualizada);
+    setListadoTareas(listaTareasActualizada);
   };
 
   // Marcar o desmarcar una tarea seleccionada
@@ -53,20 +55,70 @@ export const ListaTareasApp = () => {
     }
   };
 
+  // Marcar o desmarcar todas las tareas
+  const seleccionarTodo = () => {
+    if (
+      seleccionadas.length >= 0 &&
+      seleccionadas.length < listadoTareas.length
+    ) {
+      // Si hay almenos una tarea seleccionada, seleccionamos todas
+      setSeleccionadas(tareasFiltradas.map((item) => item.id));
+    } else {
+      // Si no, deseleccionamos todas
+      setSeleccionadas([]);
+    }
+  };
+
   // Eliminar todas las tareas seleccionadas
   const eliminarSeleccionadas = () => {
-    setlistadoTareas(
+    setListadoTareas(
       listadoTareas.filter((item) => !seleccionadas.includes(item.id))
     );
     setSeleccionadas([]); // Limpiar la lista de seleccionadas
   };
 
+  // Contar tareas completadas
+  const tareasCompletadas = listadoTareas.filter(
+    (item) => item.completado
+  ).length;
+
+  // Filtrar tareas según el filtro seleccionado
+  const tareasFiltradas = listadoTareas.filter((item) => {
+    if (filtroActual == "todas") return true; // Todas las tareas
+    if (filtroActual == "completadas") return item.completado; // Todas las tareas
+    if (filtroActual == "pendientes") return !item.completado; // Todas las tareas
+  });
+
+  console.log(filtroActual);
+
   return (
     <>
       <h1>Listado de las tareas</h1>
+      <h2>
+        Tareas completadas: {tareasCompletadas} / {listadoTareas.length}
+      </h2>
+
+      <div>
+        <label htmlFor="filtro">Filtrar tareas: </label>
+        <select
+          id="filtro"
+          value={filtroActual}
+          onChange={(e) => setFiltroActual(e.target.value)}
+        >
+          <option value="todas">Todas</option>
+          <option value="completadas">Completadas</option>
+          <option value="pendientes">Pendientes</option>
+        </select>
+      </div>
+
+      {listadoTareas.length === 0 && <p>No hay tareas registradas</p>}
+
+      {listadoTareas.length !== 0 && (
+        <button onClick={seleccionarTodo}>Seleccionar todo</button>
+      )}
 
       <ol>
-        {listadoTareas.map((item) => (
+        {tareasFiltradas.map((item) => (
           <Tarea
             key={item.id}
             nombre={item.nombre}
