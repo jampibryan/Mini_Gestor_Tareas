@@ -1,13 +1,24 @@
 import React from "react";
-
-export const Tarea = ({ nombre, completado, onEliminar, onCompletado }) => {
+export const Tarea = ({
+  nombre,
+  completado,
+  onCompletado,
+  seleccionado,
+  onSeleccionar,
+}) => {
   return (
-    <li>
-      <button onClick={onEliminar}>Eliminar</button>
-      <span onClick={onCompletado} style={{ cursor: "pointer" }}>
-        {nombre}
-      </span>
-      {completado ? "✔" : "❌"}
-    </li>
+    <>
+      <li>
+        <input
+          type="checkbox"
+          checked={seleccionado}
+          onChange={onSeleccionar}
+        />
+        <span onClick={onCompletado} style={{ cursor: "pointer" }}>
+          {nombre}
+        </span>
+        {completado ? "✔" : "❌"}
+      </li>
+    </>
   );
 };

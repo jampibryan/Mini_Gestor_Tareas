@@ -3,7 +3,7 @@
 Este es un proyecto simple en React para practicar conceptos fundamentales como JSX, props, eventos, estados (`useState`), estilos dinámicos, condicionales y manejo de listas (`map`).
 
 ## 🛠️ Funcionalidades
-- Ver una lista inicial de tareas.
+- Ver una lista inicial de tareas.  
 - Agregar nuevas tareas mediante un input y un botón.
 - Eliminar tareas individualmente de la lista.
 - Marcar tareas como completadas (✅) o pendientes (❌) al hacer click.
@@ -16,7 +16,7 @@ Este es un proyecto simple en React para practicar conceptos fundamentales como 
 
 ## 📂 Estructura de archivos
 - `ListadoTareasApp.jsx` → Componente principal (puede contener todo).
-- `Tarea.jsx` (opcional) → Componente hijo para mostrar cada tarea individualmente.
+- `Tarea.jsx` → Componente hijo para mostrar cada tarea individualmente.
 - `styles.css` → Estilos para la aplicación.
 
 ## 🎯 Objetivo

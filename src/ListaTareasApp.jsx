@@ -14,6 +14,7 @@ const listadoTareasInicial = [
 export const ListaTareasApp = () => {
   const [listadoTareas, setlistadoTareas] = useState(listadoTareasInicial);
   const [nuevaTarea, setNuevaTarea] = useState("");
+  const [seleccionadas, setSeleccionadas] = useState([]);
 
   // Agregar nuevas tareas
   const addTask = () => {
@@ -33,18 +34,31 @@ export const ListaTareasApp = () => {
   const listas = listadoTareas.map((item) => item.id);
   console.log(listas);
 
-  //Eliminar tarea
-  const eliminarTarea = (id) => {
-    const nuevaListaTareas = listadoTareas.filter((item) => item.id !== id);
-    setlistadoTareas(nuevaListaTareas);
-  };
-
-  // Cambiar estado de completado
+  // Marcar o desmarcar tarea como completada
   const cambiarEstadoCompletado = (id) => {
     const listaTareasActualizada = listadoTareas.map((item) =>
       item.id === id ? { ...item, completado: !item.completado } : item
     );
     setlistadoTareas(listaTareasActualizada);
+  };
+
+  // Marcar o desmarcar una tarea seleccionada
+  const toggleSeleccion = (id) => {
+    if (seleccionadas.includes(id)) {
+      // Si ya está seleccionada, lo deseleccionamos
+      setSeleccionadas(seleccionadas.filter((itemId) => itemId !== id));
+    } else {
+      // Si no, lo seleccionamos
+      setSeleccionadas([...seleccionadas, id]);
+    }
+  };
+
+  // Eliminar todas las tareas seleccionadas
+  const eliminarSeleccionadas = () => {
+    setlistadoTareas(
+      listadoTareas.filter((item) => !seleccionadas.includes(item.id))
+    );
+    setSeleccionadas([]); // Limpiar la lista de seleccionadas
   };
 
   return (
@@ -57,8 +71,9 @@ export const ListaTareasApp = () => {
             key={item.id}
             nombre={item.nombre}
             completado={item.completado}
-            onEliminar={() => eliminarTarea(item.id)}
             onCompletado={() => cambiarEstadoCompletado(item.id)}
+            seleccionado={seleccionadas.includes(item.id)}
+            onSeleccionar={() => toggleSeleccion(item.id)}
           ></Tarea>
         ))}
       </ol>
@@ -70,6 +85,13 @@ export const ListaTareasApp = () => {
       ></input>
       <button onClick={addTask} disabled={nuevaTarea.trim() === ""}>
         Agregar
+      </button>
+
+      <button
+        disabled={seleccionadas.length == 0}
+        onClick={eliminarSeleccionadas}
+      >
+        Eliminar
       </button>
     </>
   );
