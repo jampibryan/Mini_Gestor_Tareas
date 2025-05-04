@@ -1,6 +1,10 @@
 # Mini Gestor de Tareas en React
 
-Este es un proyecto simple en React para practicar conceptos fundamentales como JSX, props, eventos, estados (`useState`), estilos dinámicos, condicionales y manejo de listas (`map`).
+Aplicación web para gestionar tareas, con funciones para agregar, editar, eliminar, completar y filtrar tareas en una lista interactiva.
+
+## 🎯 Objetivo
+
+Desarrollar una interfaz funcional y dinámica que permita al usuario gestionar sus tareas de forma simple, clara y eficiente.
 
 ## 🛠️ ¿Qué puedes hacer con esta aplicación?
 
@@ -17,10 +21,10 @@ Este es un proyecto simple en React para practicar conceptos fundamentales como 
   - Todas
   - Solo las completadas
   - Solo las pendientes
+- 🎨 Diseñar la interfaz completa y responsiva de la aplicación para que sea más visual y agradable para el usuario.
 
 ## 🧩 Próximas mejoras
 
-- 🎨 Diseñar la interfaz completa de la aplicación para que sea más visual y agradable para el usuario.
 - 💾 Guardar automáticamente las tareas en tu navegador, incluso si cierras la pestaña.
 - 🔄 Cargar tus tareas guardadas cuando vuelvas a abrir la app.
 - ⚠️ Mostrar un mensaje de confirmación antes de eliminar tareas por accidente.
@@ -28,8 +32,9 @@ Este es un proyecto simple en React para practicar conceptos fundamentales como 
 ## 🧩 Tecnologías usadas
 
 - React
+- Vite (herramienta de desarrollo)
 - JavaScript (ES6+)
-- CSS básico
+- Chakra UI (librería de componentes)
 
 ## 📂 Estructura de archivos
 
@@ -37,10 +42,35 @@ Este es un proyecto simple en React para practicar conceptos fundamentales como 
 - `Tarea.jsx` → Componente para mostrar cada tarea individualmente.
 - `FormularioTarea.jsx` → Formulario reutilizable para agregar y editar tareas.
 - `FiltroTareas.jsx` → Componente para filtrar tareas por completadas, pendientes o todas.
-- `styles.css` → Estilos generales de la aplicación.
 - `App.jsx` → Carga el componente principal en pantalla.
 - `main.jsx` → Punto de entrada de la aplicación.
 
-## 🎯 Objetivo
+## 📦 Instalación y dependencias
 
-Practicar de forma sencilla cómo crear componentes, pasar props, usar `useState`, manejar eventos, condicionales en JSX y aplicar estilos dinámicos en React.
+Para ejecutar este proyecto localmente, sigue estos pasos:
+
+1. Clona el repositorio:
+
+```bash
+git clone https://github.com/jampibryan/Mini_Gestor_Tareas
+```
+
+2. Entra a la carpeta del proyecto:
+
+```bash
+cd Mini_Gestor_Tareas
+```
+
+3. Instala todas las dependencias necesarias:
+
+```bash
+npm install
+```
+
+4. Inicia el servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+> Esto instalará todas las librerías definidas en el `package.json`, incluyendo React, Vite y Chakra UI, y levantará la aplicación en tu navegador.

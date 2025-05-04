@@ -1,25 +1,51 @@
+// Importamos React y hooks necesarios
 import React, { useState } from "react";
+import { DeleteIcon } from "@chakra-ui/icons";
+
+// Importamos componentes Chakra
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  VStack,
+  StackDivider,
+  Container,
+} from "@chakra-ui/react";
+
+// Importamos los componentes reutilizables
 import { Tarea } from "./Tarea";
 import { FormularioTarea } from "./FormularioTarea";
 import { FiltroTareas } from "./FiltroTareas";
 
+// Lista inicial de tareas
 const tareasIniciales = [
-  { id: 1, nombre: "Aprender JSX", completado: true },
-  { id: 2, nombre: "Entender props y eventos", completado: true },
-  { id: 3, nombre: "Practicar useState", completado: false },
-  { id: 4, nombre: "Aplicar condicionales y ternarios", completado: false },
-  { id: 5, nombre: "Renderizar listas con map()", completado: false },
-  { id: 6, nombre: "Agregar estilos dinámicos", completado: false },
-  { id: 7, nombre: "Separar componentes", completado: false },
+  { id: 1, nombre: "Crear proyecto con Vite y React", completado: true },
+  {
+    id: 2,
+    nombre: "Entender la sintaxis de JSX y cómo se renderiza",
+    completado: true,
+  },
+  { id: 3, nombre: "Crear un componente funcional básico", completado: true },
+  {
+    id: 4,
+    nombre: "Usar props para pasar datos a componentes",
+    completado: true,
+  },
+  { id: 5, nombre: "Controlar estado con useState", completado: false },
+  { id: 6, nombre: "Manejar eventos (onClick, onChange)", completado: false },
+  { id: 7, nombre: "Mostrar una lista con .map() en React", completado: false },
 ];
 
+// Componente principal
 export const ListaTareasApp = () => {
-  const [tareas, setTareas] = useState(tareasIniciales);
-  const [filtro, setFiltro] = useState("todas");
-  const [seleccionadas, setSeleccionadas] = useState([]);
-  const [tareaEditando, setTareaEditando] = useState(null); // 👈 Para editar tarea
+  // Estados
+  const [tareas, setTareas] = useState(tareasIniciales); // lista de tareas
+  const [filtro, setFiltro] = useState("todas"); // filtro actual
+  const [seleccionadas, setSeleccionadas] = useState([]); // ids de tareas seleccionadas
+  const [tareaEditando, setTareaEditando] = useState(null); // tarea que se está editando
 
-  // Filtrar tareas según opción seleccionada
+  // Filtrar tareas según el filtro seleccionado
   const tareasFiltradas = tareas.filter((t) =>
     filtro === "completadas"
       ? t.completado
@@ -38,35 +64,43 @@ export const ListaTareasApp = () => {
     setTareas([...tareas, nueva]);
   };
 
-  // Actualizar una tarea existente
+  // Actualizar el nombre de una tarea
   const actualizarTarea = (id, nuevoNombre) => {
     setTareas(
       tareas.map((t) => (t.id === id ? { ...t, nombre: nuevoNombre } : t))
     );
-    setTareaEditando(null); // Limpiar el modo edición
+    setTareaEditando(null); // salir del modo edición
   };
 
-  // Cambiar estado de completado
+  // Cambiar el estado de completado de una tarea
   const cambiarCompletado = (id) => {
     setTareas(
       tareas.map((t) => (t.id === id ? { ...t, completado: !t.completado } : t))
     );
   };
 
-  // Seleccionar/deseleccionar tarea
+  // Seleccionar o deseleccionar una tarea
   const toggleSeleccion = (id) => {
     setSeleccionadas((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
   };
 
-  // Eliminar tareas seleccionadas
+  // Eliminar todas las tareas seleccionadas
   const eliminarSeleccionadas = () => {
+    // Verificar si la tarea en edición está siendo eliminada
+    if (tareaEditando && seleccionadas.includes(tareaEditando.id)) {
+      setTareaEditando(null); // Restablecer el modo edición
+    }
+
+    // Filtrar las tareas que no están seleccionadas
     setTareas(tareas.filter((t) => !seleccionadas.includes(t.id)));
+
+    // Limpiar las tareas seleccionadas
     setSeleccionadas([]);
   };
 
-  // Seleccionar o deseleccionar todas
+  // Seleccionar o deseleccionar todas las tareas visibles
   const seleccionarTodo = () => {
     if (seleccionadas.length < tareasFiltradas.length) {
       setSeleccionadas(tareasFiltradas.map((t) => t.id));
@@ -75,28 +109,50 @@ export const ListaTareasApp = () => {
     }
   };
 
-  // Activar modo edición
+  // Activar modo edición para una tarea
   const editarTarea = (tarea) => {
     setTareaEditando(tarea);
   };
 
+  // Contador de tareas completadas
   const completadas = tareas.filter((t) => t.completado).length;
 
   return (
-    <>
-      <h1>Gestor de Tareas</h1>
+    <Container maxW="container.md" py={6}>
+      {/* Título y contador */}
+      <Heading as="h1" size="xl" mb={2} textAlign="center">
+        Gestor de Tareas
+      </Heading>
 
-      <h2>
-        Tareas completadas: {completadas} / {tareas.length}
-      </h2>
+      <Text fontSize="xl" mb={4} textAlign="center">
+        {tareas.length === 0
+          ? "No hay tareas"
+          : `Tareas completadas: ${completadas} / ${tareas.length}`}
+      </Text>
 
+      {/* Componente para elegir el filtro */}
       <FiltroTareas filtro={filtro} setFiltro={setFiltro} />
 
+      {/* Botón para seleccionar todas */}
       {tareas.length > 0 && (
-        <button onClick={seleccionarTodo}>Seleccionar todo</button>
+        <Box
+          mt={"6"}
+          display={{ base: "flex", md: "block" }}
+          justifyContent="center"
+        >
+          <Button colorScheme="teal" size="sm" onClick={seleccionarTodo}>
+            Seleccionar todo
+          </Button>
+        </Box>
       )}
 
-      <ol>
+      {/* Lista de tareas */}
+      <VStack
+        spacing={3}
+        mt={6}
+        divider={<StackDivider borderColor="gray.200" />}
+        align="stretch"
+      >
         {tareasFiltradas.map((t) => (
           <Tarea
             key={t.id}
@@ -105,27 +161,32 @@ export const ListaTareasApp = () => {
             seleccionado={seleccionadas.includes(t.id)}
             onCompletado={() => cambiarCompletado(t.id)}
             onSeleccionar={() => toggleSeleccion(t.id)}
-            onEditar={() => editarTarea(t)} // 👈 Nueva función de editar
+            onEditar={() => editarTarea(t)}
           />
         ))}
-      </ol>
+      </VStack>
 
-      {/* Formulario para agregar o editar tareas */}
+      {/* Formulario para agregar o editar tarea */}
       <FormularioTarea
         modo={tareaEditando ? "editar" : "agregar"}
-        valorInicial={tareaEditando?.nombre || ""}
+        valorInicial={tareaEditando?.nombre || ""} // Usamos en cadenamiento opcion (?.) para evitar errores si no hay tarea editando
         onAgregar={agregarTarea}
         onActualizar={(nuevoNombre) =>
           actualizarTarea(tareaEditando.id, nuevoNombre)
         }
       />
 
-      <button
+      {/* Botón para eliminar tareas seleccionadas */}
+      <Button
         onClick={eliminarSeleccionadas}
-        disabled={seleccionadas.length === 0}
+        mt={4}
+        colorScheme="red"
+        size="sm"
+        isDisabled={seleccionadas.length === 0}
+        leftIcon={<DeleteIcon />}
       >
-        Eliminar seleccionadas
-      </button>
-    </>
+        Eliminar
+      </Button>
+    </Container>
   );
 };
